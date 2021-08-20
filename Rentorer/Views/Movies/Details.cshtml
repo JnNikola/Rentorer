@@ -1,0 +1,18 @@
+﻿@model Rentor.Models.Movie
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<h3>@Model.Name</h3>
+
+<ul>
+
+    <li><h3>Genre: @Model.Genre.Name</h3></li>
+    <li><h3>Release Date: @Model.ReleaseDate.ToLongDateString()</h3></li>
+    <li><h3>Date Added: @Model.DateAdded.ToLongDateString()</h3></li>
+    <li><h3>Number in Stock: @Model.NumberInStock</h3></li>
+
+</ul>
+

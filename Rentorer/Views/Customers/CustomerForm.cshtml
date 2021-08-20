@@ -1,0 +1,50 @@
+﻿@model Rentorer.ViewModels.NewCustomerViewModel
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.IsEditing.GetValueOrDefault(false))
+{
+    <h2>Edit Customer</h2>
+}
+else
+{
+    <h2>New Customer</h2>
+}
+
+
+@using (Html.BeginForm("Save", "Customers"))
+{
+    <div class="form-group">
+        @Html.LabelFor(c => c.Customer.Name)
+        @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(c=> c.Customer.Name)
+    </div>
+    <div class="form-group">
+        <label>Date of Birth</label>
+        @Html.TextBoxFor(m => m.Customer.Birthday, "{0:d MMM yyy}", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Membership Type</label>
+        @Html.DropDownListFor(m => m.Customer.MembershipTypeId,new SelectList(Model.MembershipTypes, "Id", "Name"), "Select Membership Type", new { @class = "form-control" })
+        @Html.ValidationMessageFor(c=> c.Customer.MembershipTypeId)
+    </div>
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(c => c.Customer.IsSubscribedToNewsLetter) Subscribe to Newsletter
+        </label>
+    </div>
+    <button type="submit" class="btn btn-primary">
+        Save
+    </button>
+
+    @Html.HiddenFor(c=> c.Customer.Id)
+    @Html.AntiForgeryToken()
+}
+
+@*Enable client side validation*@
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

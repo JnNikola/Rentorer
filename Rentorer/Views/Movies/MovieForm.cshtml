@@ -1,0 +1,52 @@
+﻿@model Rentorer.ViewModels.NewMovieViewModel
+@{
+    ViewBag.Title = "MovieForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.IsEditing.GetValueOrDefault(false))
+{
+    <h2>Edit Movie</h2>
+}
+else
+{
+    <h2>New Movie</h2>
+}
+
+@using (Html.BeginForm("Save", "Movies"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Movie.Name)
+        @Html.TextBoxFor(m => m.Movie.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m=> m.Movie.Name)
+    </div>
+    <div class="form-group">
+        <label>Release Date</label>
+        @Html.TextBoxFor(m => m.Movie.ReleaseDate, "{0:d MMM yyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m=> m.Movie.ReleaseDate)
+    </div>
+    <div class="form-group">
+        <label>Genre</label>
+        @Html.DropDownListFor(m => m.Movie.GenreId, new SelectList(Model.Genres, "Id", "Name"), "Select Genre", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m=> m.Movie.GenreId)
+    </div>
+    <div class="form-group">
+        <label>Number in Stock</label>
+        @Html.TextBoxFor(m => m.Movie.NumberInStock, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m=> m.Movie.NumberInStock)
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Save
+    </button>
+
+    @Html.HiddenFor(c => c.Movie.Id)
+    @Html.AntiForgeryToken()
+}
+
+
+@*Enable client side validation*@
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

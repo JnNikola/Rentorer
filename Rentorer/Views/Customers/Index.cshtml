@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Rentor.Models.Customer>
+@{
+    ViewBag.Title = "CustomersList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CustomersList</h2>
+
+@if (!Model.Any())
+{
+    <h2>There Are No Movies</h2>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Discount Rate</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var customer in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(@customer.Name, "Details", new {id= customer.Id}, null)</td>
+                <td>@customer.MembershipTypeType.Name</td>
+                <td style="width: 35px">
+                    @using (Html.BeginForm("Edit", "Customers", new {id = customer.Id}))
+                    {
+                        <button type="submit" class="btn btn-default btn-sm">
+                            Edit Customer
+                        </button>
+                    }
+                </td>
+                
+                <td style="width: 35px">
+                    @using (Html.BeginForm("Delete", "Customers", new { id = customer.Id }))
+                    {
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Delete Customer
+                        </button>
+                        @Html.AntiForgeryToken()
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@using (Html.BeginForm("New", "Customers"))
+{
+    <button type="submit" class="btn btn-primary btn-lg">
+        Add Customer
+    </button>
+}
+

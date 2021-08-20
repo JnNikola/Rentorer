@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Rentor.Models.Movie>
+@{
+    ViewBag.Title = "Movies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (!Model.Any())
+{
+    <h2>There Are No Movies</h2>
+}
+else
+{
+    <h2>Movies</h2>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Movie</th>
+                <th>Genre</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>@Html.ActionLink(movie.Name, "Details", new { id = movie.Id }, null)</td>
+                    <td>@movie.Genre.Name</td>
+                    <td style="width: 35px">
+                        @using (Html.BeginForm("Edit", "Movies", new { id = movie.Id }))
+                        {
+                            <button type="submit" class="btn btn-default btn-sm">
+                                Edit Movie
+                            </button>
+                        }
+                    </td>
+                    
+                    <td style="width: 35px">
+                        @using (Html.BeginForm("Delete", "Movies", new { id = movie.Id }))
+                        {
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Delete Movie
+                            </button>
+                            @Html.AntiForgeryToken()
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@using (Html.BeginForm("New", "Movies"))
+{
+    <button type="submit" class="btn btn-primary btn-lg">
+        Add Movie
+    </button>
+}
+
+
+
