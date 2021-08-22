@@ -40,6 +40,7 @@ else
         Save
     </button>
 
+    @Html.Hidden("Movie.Id", (Model.Movie != null)? Model.Movie.Id : 0)
     @Html.HiddenFor(c => c.Movie.Id)
     @Html.AntiForgeryToken()
 }

@@ -121,7 +121,6 @@ namespace Rentorer.Controllers
             IEnumerable<Genre> genres = _context.Genres.ToList();
             NewMovieViewModel viewModel = new NewMovieViewModel()
             {
-                Movie = new Movie(),
                 Genres = genres,
                 IsEditing = false
             };
