@@ -1,10 +1,11 @@
-﻿@model IEnumerable<Rentor.Models.Customer>
+﻿@using Rentor.Models
+@model IEnumerable<Rentor.Models.Customer>
 @{
     ViewBag.Title = "CustomersList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>CustomersList</h2>
+<h2>Customers</h2>
 
 @if (!Model.Any())
 {
@@ -12,11 +13,13 @@
 }
 else
 {
-    <table class="table table-bordered table-hover">
+    <table id ="customers" class="table table-bordered table-hover">
         <thead>
         <tr>
             <th>Customer</th>
             <th>Discount Rate</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -35,13 +38,11 @@ else
                 </td>
                 
                 <td style="width: 35px">
-                    @using (Html.BeginForm("Delete", "Customers", new { id = customer.Id }))
-                    {
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            Delete Customer
+                    
+                        <button data-customer-id="@customer.Id" class="btn btn-danger btn-sm js-delete">
+                            Delete
                         </button>
-                        @Html.AntiForgeryToken()
-                    }
+
                 </td>
             </tr>
         }
@@ -56,3 +57,29 @@ else
     </button>
 }
 
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $("#customers").on("click", ".js-delete",
+                function () {
+                    var button = $(this);
+
+                    bootbox.confirm("Are You Sure?",
+                        function(result) {
+                            if (result) {
+
+                                $.ajax({
+                                    url: "/api/customers/" + button.attr("data-customer-id"),
+                                    method: "DELETE",
+                                    success: function() {
+                                        button.parents("tr").remove();
+                                    }
+                                });
+                            }
+                        });
+
+                });
+        });
+    </script>
+}
