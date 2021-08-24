@@ -5,6 +5,7 @@ using System.Web;
 using AutoMapper;
 using Rentor.Models;
 using Rentorer.Dto;
+using Rentorer.Models;
 
 namespace Rentorer.App_Start
 {
@@ -20,6 +21,10 @@ namespace Rentorer.App_Start
             Mapper.CreateMap<MovieDto, Movie>()
                 .ForMember(m => m.Id, opt => opt.Ignore());
             Mapper.CreateMap<Movie, MovieDto>();
+
+            Mapper.CreateMap<MembershipType, MembershipTypeDto>();
+
+            Mapper.CreateMap<Genre, GenreDto>();
 
         }
     }

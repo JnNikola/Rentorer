@@ -20,7 +20,7 @@ namespace Rentorer.Dto
 
         public bool IsSubscribedToNewsLetter { get; set; }
 
-        //public MembershipType MembershipTypeType { get; set; }
+        public MembershipTypeDto MembershipTypeType { get; set; }
         
         //as a foreign key
        
