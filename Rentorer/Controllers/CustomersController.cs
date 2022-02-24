@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Rentor.Models;
 using Rentorer.Migrations;
+using Rentorer.Models;
 using Rentorer.ViewModels;
 
 namespace Rentorer.Controllers
@@ -31,7 +32,11 @@ namespace Rentorer.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            if (User.IsInRole(RoleName.CanManageAll))
+            {
+                return View("Index");
+            }
+            return View("IndexReadOnly");
         }
 
         public ActionResult Details(int? id)
@@ -45,6 +50,7 @@ namespace Rentorer.Controllers
             return View(customer);
         }
 
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         public ActionResult New()
         {
             var membershipTypes = _context.MembershipTypes.ToList();
@@ -59,6 +65,7 @@ namespace Rentorer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         //passing full NewCustomerViewModel to have IsEditing field
         public ActionResult Save(NewCustomerViewModel cu)
         {
@@ -93,6 +100,7 @@ namespace Rentorer.Controllers
             return RedirectToAction("Index", "Customers");
         }
 
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         public ActionResult Edit(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
@@ -108,6 +116,7 @@ namespace Rentorer.Controllers
 
         
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         public ActionResult Delete(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.Id == id);

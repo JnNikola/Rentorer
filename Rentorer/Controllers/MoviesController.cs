@@ -5,13 +5,13 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using Rentor.Models;
 using Rentor.ViewModels;
+using Rentorer.Models;
 using Rentorer.ViewModels;
 
 
 namespace Rentorer.Controllers
 {
     
-
     public class MoviesController : Controller
     {
 
@@ -22,24 +22,13 @@ namespace Rentorer.Controllers
             _context= new ApplicationDbContext();
         }
 
-        // GET: Movies/Random
-        public ActionResult Random()
-        {
-            Movie movie = new Movie() {Name = "The Jacket", Id = 1};
-            List<Customer> customers = _context.Customers.ToList();
-
-            var viewModel = new RandomMovieViewModel()
-            {
-                Customers = customers,
-                Movie = movie
-            };
-
-            return View(viewModel);
-        }
-        
         public ActionResult Index()
         {
-            return View();
+            if (User.IsInRole(RoleName.CanManageAll) || User.IsInRole(RoleName.CanManageMovies))
+            {
+                return View("Index");
+            }
+            return View("IndexReadOnly");
         }
 
         public ActionResult Details(int? id)
@@ -56,6 +45,7 @@ namespace Rentorer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         //passing full NewMovieViewModel to have IsEditing field
         public ActionResult Save(NewMovieViewModel mv)
         {
@@ -94,6 +84,7 @@ namespace Rentorer.Controllers
             return RedirectToAction("Index", "Movies");
         }
 
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         public ActionResult Edit(int id)
         {
             var movieFromDb = _context.Movies.SingleOrDefault(m => m.Id == id);
@@ -113,6 +104,7 @@ namespace Rentorer.Controllers
             return View("MovieForm", viewModel);
         }
 
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         public ActionResult New()
         {
             IEnumerable<Genre> genres = _context.Genres.ToList();
@@ -126,6 +118,7 @@ namespace Rentorer.Controllers
         }
 
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         public ActionResult Delete(int id)
         {
             var movie = _context.Movies.SingleOrDefault(c => c.Id == id);

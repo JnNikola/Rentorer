@@ -6,58 +6,29 @@
 }
 
 <h2>Customers</h2>
+@Html.ActionLink("Add Customer", "New", null, new { @class = "btn btn-primary btn-lg" })
+<hr />
 
-
-    <table id ="customers" class="table table-bordered table-hover">
-        <thead>
+<table id="customers" class="table table-bordered table-hover">
+    <thead>
         <tr>
             <th>Customer</th>
             <th>Discount Rate</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
-        </thead>
-        <tbody>
-        @*@foreach (var customer in Model)
-        {
-            <tr>
-                <td>@Html.ActionLink(@customer.Name, "Details", new {id= customer.Id}, null)</td>
-                <td>@customer.MembershipTypeType.Name</td>
-                <td style="width: 35px">
-                    @using (Html.BeginForm("Edit", "Customers", new {id = customer.Id}))
-                    {
-                        <button type="submit" class="btn btn-default btn-sm">
-                            Edit Customer
-                        </button>
-                    }
-                </td>
-                
-                <td style="width: 35px">
-                    
-                        <button data-customer-id="@customer.Id" class="btn btn-danger btn-sm js-delete">
-                            Delete
-                        </button>
-
-                </td>
-            </tr>
-        }*@
-        </tbody>
-    </table>
-
-
-@using (Html.BeginForm("New", "Customers"))
-{
-    <button type="submit" class="btn btn-primary btn-lg">
-        Add Customer
-    </button>
-}
+    </thead>
+    <tbody>
+        
+    </tbody>
+</table>
 
 @section scripts
 {
     <script>
         $(document).ready(function () {
 
-           var table = $("#customers").DataTable({
+            var table = $("#customers").DataTable({
                 ajax: {
                     url: "/api/customers",
                     dataSrc: ""
@@ -66,8 +37,8 @@
                 columns: [
                     {
                         data: "name",
-                        render: function(data, type, customer) {
-                            return "<a href='/customers/details/" + customer.id + "'>" + data +"</a>";
+                        render: function (data, type, customer) {
+                            return "<a href='/customers/details/" + customer.id + "'>" + data + "</a>";
                         }
                     },
                     {
@@ -75,14 +46,14 @@
                     },
                     {
                         data: "id",
-                        render: function(data) {
+                        render: function (data) {
                             return "<a href='/customers/edit/" + data + "' class='btn btn-default btn-sm'> Edit </a>";
                         }
                     },
                     {
                         data: "id",
-                        render: function(data) {
-                            return "<button data-customer-id='"+data+"' class='btn btn-danger btn-sm js-delete'>Delete</button>";
+                        render: function (data) {
+                            return "<button data-customer-id='" + data + "' class='btn btn-danger btn-sm js-delete'>Delete</button>";
                         }
                     }
                 ]
@@ -94,7 +65,7 @@
                     var button = $(this);
 
                     bootbox.confirm("Are You Sure?",
-                        function(result) {
+                        function (result) {
                             if (result) {
 
                                 $.ajax({

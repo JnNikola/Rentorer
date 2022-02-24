@@ -1,12 +1,14 @@
-﻿@model IEnumerable<Rentor.Models.Movie>
-@{
+﻿@{
     ViewBag.Title = "Movies";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-    <h2>Movies</h2>
-    <table id="movies" class="table table-bordered table-hover">
+<h2>Movies</h2>
+
+@Html.ActionLink("Add Movie", "New", null, new{@class= "btn btn-primary btn-lg" })
+<hr/>
+<table id="movies" class="table table-bordered table-hover">
         <thead>
             <tr>
                 <th>Movie</th>
@@ -16,39 +18,9 @@
             </tr>
         </thead>
         <tbody>
-            @*@foreach (var movie in Model)
-            {
-                <tr>
-                    <td>@Html.ActionLink(movie.Name, "Details", new { id = movie.Id }, null)</td>
-                    <td>@movie.Genre.Name</td>
-                    <td style="width: 35px">
-                        @using (Html.BeginForm("Edit", "Movies", new { id = movie.Id }))
-                        {
-                            <button type="submit" class="btn btn-default btn-sm">
-                                Edit Movie
-                            </button>
-                        }
-                    </td>
-                    
-                    <td style="width: 35px">
-                       
-                        <button data-movie-id="@movie.Id" type="submit" class="btn btn-danger btn-sm js-delete">
-                            Delete Movie
-                        </button>
-
-                    </td>
-                </tr>
-            }*@
+            
         </tbody>
     </table>
-
-
-@using (Html.BeginForm("New", "Movies"))
-{
-    <button type="submit" class="btn btn-primary btn-lg">
-        Add Movie
-    </button>
-}
 
 @section scripts
 {

@@ -7,6 +7,7 @@ using System.Web.Http;
 using AutoMapper;
 using Rentor.Models;
 using Rentorer.Dto;
+using Rentorer.Models;
 
 namespace Rentorer.Controllers.Api
 {
@@ -41,6 +42,7 @@ namespace Rentorer.Controllers.Api
 
         //POST: /api/customers
         [HttpPost]
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         public IHttpActionResult CreateCustomer(CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
@@ -57,6 +59,7 @@ namespace Rentorer.Controllers.Api
 
         //PUT: /api/customers/id
         [HttpPut]
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         public IHttpActionResult UpdateCustomer(int id, CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
@@ -76,6 +79,7 @@ namespace Rentorer.Controllers.Api
 
         //DELETE: /api/customers/id
         [HttpDelete]
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         public void DeleteCustomer(int id)
         {
             var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);

@@ -8,6 +8,7 @@ using System.Web.Http;
 using AutoMapper;
 using Rentor.Models;
 using Rentorer.Dto;
+using Rentorer.Models;
 
 namespace Rentorer.Controllers.Api
 {
@@ -39,6 +40,7 @@ namespace Rentorer.Controllers.Api
 
         //POST /api/movies
         [HttpPost]
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         public IHttpActionResult CreateMovie(MovieDto movieDto)
         {
             if (!ModelState.IsValid)
@@ -55,6 +57,7 @@ namespace Rentorer.Controllers.Api
 
         //PUT: /api/movies/id
         [HttpPut]
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         public IHttpActionResult UpdateMovie(int id, MovieDto movieDto)
         {
             if (!ModelState.IsValid)
@@ -75,6 +78,7 @@ namespace Rentorer.Controllers.Api
 
         //DELETE: /api/movies/id
         [HttpDelete]
+        [Authorize(Roles = RoleName.CanManageAll + ", " + RoleName.CanManageMovies)]
         public void DeleteMovie(int id)
         {
             var movieInDb = _context.Movies.SingleOrDefault(m => m.Id == id);
