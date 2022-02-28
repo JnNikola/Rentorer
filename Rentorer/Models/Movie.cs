@@ -34,9 +34,9 @@ namespace Rentor.Models
 
         [Display(Name = "Number in Stock")]
         [Required]
-        [Range(1, 30)]
+        [Range(1, 100)]
         public int NumberInStock { get; set; }
-        
 
+        public int NumberAvailable { get; set; }
     }
 }

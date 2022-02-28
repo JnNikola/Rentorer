@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Rentorer.Models
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -24,8 +25,14 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
                     <li>@Html.ActionLink("Movies", "Index", "Movies")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    
+                    @if (User.IsInRole(RoleName.CanManageAll))
+                    {
+                        <li>@Html.ActionLink("New Rent", "New", "Rentals")</li>
+                    }
+
+                    @*<li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

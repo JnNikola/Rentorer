@@ -131,3 +131,6 @@ C:\Users\nikol\source\repos\Rentorer\Rentorer\bin\System.Web.Http.WebHost.xml
 C:\Users\nikol\source\repos\Rentorer\Rentorer\bin\AutoMapper.dll
 C:\Users\nikol\source\repos\Rentorer\Rentorer\bin\AutoMapper.xml
 C:\Users\nikol\source\repos\Rentorer\Rentorer\obj\Debug\Rentorer.Migrations.SeedUsersRoles.resources
+C:\Users\nikol\source\repos\Rentorer\Rentorer\obj\Debug\Rentorer.Migrations.AddedRentals.resources
+C:\Users\nikol\source\repos\Rentorer\Rentorer\obj\Debug\Rentorer.Migrations.NumberAvailableToMoviesModel.resources
+C:\Users\nikol\source\repos\Rentorer\Rentorer\obj\Debug\Rentorer.Migrations.SeedAvailableMovies.resources

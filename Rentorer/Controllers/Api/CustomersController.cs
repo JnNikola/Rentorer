@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Data.Entity;
@@ -21,12 +20,21 @@ namespace Rentorer.Controllers.Api
         }
 
         //GET: /api/customers
-        public IEnumerable<CustomerDto> GetCustomers()
+        public IHttpActionResult GetCustomers(string query = null)
         {
-            return _context.Customers
-                .Include(c=> c.MembershipTypeType)
+            var custQuery = _context.Customers
+                .Include(c => c.MembershipTypeType);
+
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                custQuery = custQuery.Where(c => c.Name.Contains(query));
+            }
+
+            var customerDtos = custQuery
                 .ToList()
                 .Select(Mapper.Map<Customer, CustomerDto>);
+
+            return Ok(customerDtos);
         }
 
         //GET: /api/customers/id
