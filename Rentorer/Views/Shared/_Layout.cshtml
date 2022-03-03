@@ -26,9 +26,15 @@
                     <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
                     <li>@Html.ActionLink("Movies", "Index", "Movies")</li>
                     
+                    @if (User.IsInRole(RoleName.CanManageMovies) || User.IsInRole(RoleName.CanManageAll))
+                    {
+                        <li>@Html.ActionLink("New Rental", "New", "Rentals")</li>
+                        //<li>@Html.ActionLink("Customer Rentals", "CustomerRentals", "Rentals")</li>
+                    }
+
                     @if (User.IsInRole(RoleName.CanManageAll))
                     {
-                        <li>@Html.ActionLink("New Rent", "New", "Rentals")</li>
+                        <li>@Html.ActionLink("Assign Roles", "UserRole", "UserRole")</li>
                     }
 
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>

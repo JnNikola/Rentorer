@@ -1,0 +1,163 @@
+﻿@model Rentorer.ViewModels.AssignRoleFormViewModel
+@{
+    ViewBag.Title = "AssignForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>User to Role</h2>
+
+
+<div class="flex-container">
+
+    <div class="flex-child">
+
+        <table id="users" style="float: left" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>User Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td class="js-selectUser" data-userId="@user.Id" data-userName="@user.UserName">@user.UserName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="flex-child">
+
+        <table id="roles" style="float: left" class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th>Role Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in Model.Roles)
+                {
+                    <tr>
+                        <td class="js-selectRole" data-roleId="@role.Id" data-roleName="@role.Name">@role.Name</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<hr />
+
+<form id="newUserRole">
+    <div style="display: inline">
+        <label>User</label>
+        <input type="text" data-rule-requiredUser="true" name="user" id="userInput" disabled="disabled"/>
+
+    </div>
+
+    <div style="display: inline; margin-inline: 2%">
+        <label>Role</label>
+        <input type="text" data-rule-requiredRole="true" name="role" id="roleInput" disabled="disabled"/>
+    </div>
+
+    <button style="float: right" type="submit" class="btn btn-primary btn-sm" id="assignButton">Assign Role</button>
+</form>
+
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        $(document).ready(function() {
+            $("#users").DataTable();
+
+            $("#roles").DataTable();
+
+            var data = { roleId: null, roleName: null, userId: null };
+            var curActiveRole = null;
+            var curActiveUser = null;
+            function reset() {
+                data = { roleId: null, roleName: null, userId: null };
+                $("#roleInput").val("");
+                $("#userInput").val("");
+                $("#roles tbody tr td").removeClass("customActive");
+                $("#users  tbody tr td").removeClass("customActive");
+            }
+
+
+            $("#roles").on("click",
+                ".js-selectRole",
+                function () {
+                    var td = $(this);
+                    td.addClass("customActive");
+                    if (curActiveRole != null)
+                        curActiveRole.removeClass("customActive");
+                    curActiveRole = td;
+
+                    data.roleId = td.attr("data-roleId");
+                    var roleName= td.attr("data-roleName");
+                    data.roleName = roleName;
+                    $("#roleInput").val(roleName);
+                });
+
+
+            $("#users").on("click",
+                ".js-selectUser",
+                function () {
+                    var td = $(this);
+                    td.addClass("customActive");
+                    if (curActiveUser != null)
+                        curActiveUser.removeClass("customActive");
+                    curActiveUser = td;
+
+                    data.userId =td.attr("data-userId");
+                    $("#userInput").val(td.attr("data-userName"));
+                });
+
+            $.validator.addMethod("requiredUser",
+                function () {
+                    console.log(data.userId != null);
+                    return data.userId != null;
+                }, "Please select a user from the table!");
+
+            $.validator.addMethod("requiredRole",
+                function () {
+                    console.log(data.roleId != null);
+                    return data.roleId != null;
+                }, "Please select a role from the table!");
+
+
+            $("#newUserRole").validate({
+                submitHandler: function () {
+                    console.log("Entered submit handler");
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("Assign","UserRole")',
+                        data: { userId: data.userId, roleId: data.roleId, roleName: data.roleName },
+                        success: function(response) {
+                            if (response.success) {
+                                toastr.success(response.responseText);
+                            } else {
+                                toastr.error(response.responseText);
+                            }
+                        }
+                    }).fail(function() {
+                        toastr.error("Oops... an error occurred!");
+                    });
+                    reset();
+
+                    return false;
+                }
+            });
+
+        });
+
+    </script>
+}

@@ -33,7 +33,8 @@ namespace Rentorer
                       "~/Content/Site.css",
                       "~/Content/DataTables/css/dataTables.bootstrap.css",
                       "~/Content/typeahead.css",
-                      "~/Content/toastr.css"));
+                      "~/Content/toastr.css",
+                      "~/Content/flex.css"));
         }
     }
 }
