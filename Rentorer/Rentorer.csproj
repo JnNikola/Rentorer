@@ -184,7 +184,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\CustomersController.cs" />
     <Compile Include="Controllers\Api\MoviesController.cs" />
-    <Compile Include="Controllers\Api\NewRentalsController.cs" />
+    <Compile Include="Controllers\Api\RentalsController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -197,6 +197,7 @@
     <Compile Include="Dto\MembershipTypeDto.cs" />
     <Compile Include="Dto\MovieDto.cs" />
     <Compile Include="Dto\NewRentalDto.cs" />
+    <Compile Include="Dto\RentalDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -464,7 +465,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\CustomStyles\Site.css" />
     <Content Include="Scripts\bloodhound.js" />
     <Content Include="Scripts\bloodhound.min.js" />
     <Content Include="Scripts\bootbox.js" />
@@ -617,6 +618,8 @@
     <Content Include="Views\Customers\IndexReadOnly.cshtml" />
     <Content Include="Views\Rentals\New.cshtml" />
     <Content Include="Views\UserRole\AssignForm.cshtml" />
+    <Content Include="Views\Rentals\CustomerRentals.cshtml" />
+    <Content Include="Views\Rentals\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

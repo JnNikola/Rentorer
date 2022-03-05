@@ -56,13 +56,13 @@
 <form id="newUserRole">
     <div style="display: inline">
         <label>User</label>
-        <input type="text" data-rule-requiredUser="true" name="user" id="userInput" disabled="disabled"/>
+        <input class="validateUser" type="text" data-rule-requiredUser="true" name="userinput" id="userInput" disabled="disabled"/>
 
     </div>
 
     <div style="display: inline; margin-inline: 2%">
         <label>Role</label>
-        <input type="text" data-rule-requiredRole="true" name="role" id="roleInput" disabled="disabled"/>
+        <input class="validateRole" type="text" data-rule-requiredRole="true" name="roleInput" id="roleInput" disabled="disabled"/>
     </div>
 
     <button style="float: right" type="submit" class="btn btn-primary btn-sm" id="assignButton">Assign Role</button>
@@ -73,6 +73,7 @@
 @section scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
+
     <script>
 
         $(document).ready(function() {
@@ -90,6 +91,17 @@
                 $("#roles tbody tr td").removeClass("customActive");
                 $("#users  tbody tr td").removeClass("customActive");
             }
+
+
+            $.validator.addMethod("requiredUser",
+                function () {
+                    return data.userId != null;
+                }, "Please select a user from the table!");
+
+            $.validator.addMethod("requiredRole",
+                function () {
+                    return data.roleId != null;
+                }, "Please select a role from the table!");
 
 
             $("#roles").on("click",
@@ -121,20 +133,8 @@
                     $("#userInput").val(td.attr("data-userName"));
                 });
 
-            $.validator.addMethod("requiredUser",
-                function () {
-                    console.log(data.userId != null);
-                    return data.userId != null;
-                }, "Please select a user from the table!");
-
-            $.validator.addMethod("requiredRole",
-                function () {
-                    console.log(data.roleId != null);
-                    return data.roleId != null;
-                }, "Please select a role from the table!");
-
-
             $("#newUserRole").validate({
+
                 submitHandler: function () {
                     console.log("Entered submit handler");
                     $.ajax({
@@ -151,6 +151,7 @@
                     }).fail(function() {
                         toastr.error("Oops... an error occurred!");
                     });
+
                     reset();
 
                     return false;

@@ -1,0 +1,111 @@
+﻿@model IEnumerable<Rentor.Models.Customer>
+@{
+    ViewBag.Title = "CustomerRentals";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="flex-container">
+
+    <div class="flex-child">
+
+        <table id="customers" style="float: left;margin-top:10%" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Customers</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model)
+                {
+                    <tr>
+                        <td class="js-selectCustomer" data-customerId="@customer.Id">@customer.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="flex-child" style="margin-top:5%">
+
+        <ul id="rentals" class="list-group col-6">
+        </ul>
+
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#customers").DataTable();
+
+            var curActiveCust = null;
+
+            $("#customers").on("click",
+                ".js-selectCustomer",
+                function () {
+                    var td = $(this);
+                    td.addClass("customActive");
+                    if (curActiveCust != null)
+                        curActiveCust.removeClass("customActive");
+                    curActiveCust = td;
+                    $.ajax({
+                        type: 'GET',
+                        url: '/api/rentals/' + td.attr("data-customerId"),
+                        success: function (data) {
+                            createRentList(data);
+                        }
+                    });
+                });
+
+
+            function createRentList(data) {
+                $("#rentals").html("");
+
+                if (data.length === 0) {
+                    $('#rentals').append(
+                        '<li class="list-group-item">No Rents For This Customer!</li>'
+                    );
+                }
+                else {
+
+                    for (var i = 0; data.length > i; i++) {
+                        var returnBtn = "";
+                        var liReturned = "returned";
+                        if (data[i].dateReturned === null) {
+                            returnBtn = '<button id="returnBtn" class="btn btn-sm btn-primary floatR" data-rentId="' + data[i].id + '">Return</button>';
+                            liReturned = "";
+                        };
+                        $('#rentals').append(
+                            '<li class="list-group-item ' + liReturned + '">' + data[i].movie.name +
+                            returnBtn +
+                            '<a href="/rentals/details/' + data[i].id + '" class="btn btn-sm btn-info floatR">Details</a>' +
+                            '</li>'
+                        );
+                    }
+                }
+                
+            };
+
+            $(document).on('click',
+                "#returnBtn",
+                function () {
+                    var btn = $(this);
+                    if (confirm("Are you sure you want to return this movie?")) {
+                        $.ajax({
+                            type: 'PATCH',
+                            url: '/api/rentals/' + btn.attr("data-rentId"),
+                            success: function () {
+                                toastr.success("Rent returned successfully!");
+                                btn.remove();
+                            }
+                        });
+                    }
+                });
+
+        });
+    </script>
+}
+

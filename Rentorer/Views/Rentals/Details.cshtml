@@ -1,0 +1,23 @@
+﻿@model Rentorer.Models.Rental
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Rent Details</h2>
+
+<ul>
+    <li><h4>Customer: @Model.Customer.Name</h4></li>
+    <li><h4>Movie Title: @Model.Movie.Name</h4></li>
+    <li><h4>Date Rented: @Html.ValueFor(r => r.DateRented, "{0:d MMM yyyy}")</h4></li>
+
+    @if (@Model.DateReturned.HasValue)
+    {
+        <li><h4><big style="color:aquamarine">Date Returned: @Html.ValueFor(r => r.DateReturned, "{0:d MMM yyyy}")</big></h4></li>
+    }
+    else
+    {
+        <li><h4><big style="color: indigo">Movie Not Returned!</big></h4></li>
+    }
+</ul>

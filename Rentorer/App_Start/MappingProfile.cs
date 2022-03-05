@@ -26,6 +26,9 @@ namespace Rentorer.App_Start
 
             Mapper.CreateMap<Genre, GenreDto>();
 
+            Mapper.CreateMap<Rental, RentalDto>();
+            Mapper.CreateMap<RentalDto, Rental>();
+
         }
     }
 }
